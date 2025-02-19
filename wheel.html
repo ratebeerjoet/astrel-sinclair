@@ -1,0 +1,59 @@
+document.addEventListener("DOMContentLoaded", async function() {
+    const planets = ['sun', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
+    const chartRadius = 250;  // Radius of the astrology chart
+    const centerX = 300, centerY = 300; // Center of the SVG canvas
+    
+    let planetPositions = [];
+    
+    for (let planet of planets) {
+        try {
+            let response = await fetch(`http://127.0.0.1:5000/planets/${planet}/2025-01-01`);
+            let data = await response.json();
+            if (data.ecliptic_longitude !== undefined) {
+                planetPositions.push({ name: planet, longitude: data.ecliptic_longitude });
+            }
+        } catch (error) {
+            console.error(`Error fetching data for ${planet}:`, error);
+        }
+    }
+    
+    // Create SVG container
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", "600");
+    svg.setAttribute("height", "600");
+    
+    // Draw circular astrology chart
+    const circle = document.createElementNS(svgNS, "circle");
+    circle.setAttribute("cx", centerX);
+    circle.setAttribute("cy", centerY);
+    circle.setAttribute("r", chartRadius);
+    circle.setAttribute("stroke", "black");
+    circle.setAttribute("stroke-width", "2");
+    circle.setAttribute("fill", "none");
+    svg.appendChild(circle);
+    
+    // Plot planets
+    planetPositions.forEach(planet => {
+        let angleRad = (planet.longitude * Math.PI) / 180;
+        let x = centerX + chartRadius * Math.cos(angleRad);
+        let y = centerY + chartRadius * Math.sin(angleRad);
+        
+        const planetCircle = document.createElementNS(svgNS, "circle");
+        planetCircle.setAttribute("cx", x);
+        planetCircle.setAttribute("cy", y);
+        planetCircle.setAttribute("r", "5");
+        planetCircle.setAttribute("fill", "red");
+        svg.appendChild(planetCircle);
+        
+        const text = document.createElementNS(svgNS, "text");
+        text.setAttribute("x", x + 10);
+        text.setAttribute("y", y);
+        text.setAttribute("font-size", "12");
+        text.setAttribute("fill", "black");
+        text.textContent = planet.name;
+        svg.appendChild(text);
+    });
+    
+    document.body.appendChild(svg);
+});

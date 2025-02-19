@@ -1,0 +1,66 @@
+﻿
+FullName                                                                                           
+--------                                                                                           
+J:\code projects\astrel-sinclair\file_list.txt                                                     
+J:\code projects\astrel-sinclair\index.html                                                        
+J:\code projects\astrel-sinclair\README.md                                                         
+J:\code projects\astrel-sinclair\AstroChart-main\.eslintignore                                     
+J:\code projects\astrel-sinclair\AstroChart-main\.eslintrc.js                                      
+J:\code projects\astrel-sinclair\AstroChart-main\.gitignore                                        
+J:\code projects\astrel-sinclair\AstroChart-main\CODE_OF_CONDUCT.md                                
+J:\code projects\astrel-sinclair\AstroChart-main\jest.config.js                                    
+J:\code projects\astrel-sinclair\AstroChart-main\LICENSE                                           
+J:\code projects\astrel-sinclair\AstroChart-main\package-lock.json                                 
+J:\code projects\astrel-sinclair\AstroChart-main\package.json                                      
+J:\code projects\astrel-sinclair\AstroChart-main\README.md                                         
+J:\code projects\astrel-sinclair\AstroChart-main\tsconfig.json                                     
+J:\code projects\astrel-sinclair\AstroChart-main\webpack.config.js                                 
+J:\code projects\astrel-sinclair\AstroChart-main\.github\FUNDING.yml                               
+J:\code projects\astrel-sinclair\AstroChart-main\.github\ISSUE_TEMPLATE\bug_report.md              
+J:\code projects\astrel-sinclair\AstroChart-main\.github\ISSUE_TEMPLATE\feature_request.md         
+J:\code projects\astrel-sinclair\AstroChart-main\.github\ISSUE_TEMPLATE\symbol_request.md          
+J:\code projects\astrel-sinclair\AstroChart-main\.github\workflows\checks.yaml                     
+J:\code projects\astrel-sinclair\AstroChart-main\.github\workflows\npm-publish.yml                 
+J:\code projects\astrel-sinclair\AstroChart-main\dist\astrochart.js                                
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\aspect.d.ts                      
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\chart.d.ts                       
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\index.d.ts                       
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\radix.d.ts                       
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\settings.d.ts                    
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\svg.d.ts                         
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\transit.d.ts                     
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\utils.d.ts                       
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\zodiac.d.ts                      
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\animation\animator.d.ts          
+J:\code projects\astrel-sinclair\AstroChart-main\dist\project\src\animation\timer.d.ts             
+J:\code projects\astrel-sinclair\AstroChart-main\doc\images\transits.png                           
+J:\code projects\astrel-sinclair\AstroChart-main\project\examples\2ChartsOnPage\2radix.html        
+J:\code projects\astrel-sinclair\AstroChart-main\project\examples\debug\calibration.html           
+J:\code projects\astrel-sinclair\AstroChart-main\project\examples\radix\radix.html                 
+J:\code projects\astrel-sinclair\AstroChart-main\project\examples\radix\radix_2016_11_15.html      
+J:\code projects\astrel-sinclair\AstroChart-main\project\examples\radix\radix_collision.html       
+J:\code projects\astrel-sinclair\AstroChart-main\project\examples\radix\radix_custom_settings.html 
+J:\code projects\astrel-sinclair\AstroChart-main\project\examples\transit\animate.html             
+J:\code projects\astrel-sinclair\AstroChart-main\project\examples\transit\stroke_only.html         
+J:\code projects\astrel-sinclair\AstroChart-main\project\examples\transit\transit.html             
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\aspect.test.ts                        
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\aspect.ts                             
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\chart.test.ts                         
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\chart.ts                              
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\index.ts                              
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\radix.test.ts                         
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\radix.ts                              
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\settings.ts                           
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\svg.test.ts                           
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\svg.ts                                
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\transit.ts                            
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\utils.test.ts                         
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\utils.ts                              
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\zodiac.test.ts                        
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\zodiac.ts                             
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\animation\animator.ts                 
+J:\code projects\astrel-sinclair\AstroChart-main\project\src\animation\timer.ts                    
+J:\code projects\astrel-sinclair\AstroChart-main\project\__tests__\radix.test.ts                   
+J:\code projects\astrel-sinclair\AstroChart-main\project\__tests__\__snapshots__\radix.test.ts.snap
+
+

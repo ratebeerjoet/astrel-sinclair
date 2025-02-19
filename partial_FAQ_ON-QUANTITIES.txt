@@ -1,0 +1,360 @@
+Target Body
+Refers to the object of interest for which an ephemeris is to be created. Selected by the user. It can be a major-body or small-body.
+
+Center (or coordinate origin, or observering location)
+This is the point to which output quantities for the target (such as coordinates) are referred: (0,0,0). It is typically where the observer is located.
+
+An observation point is “topocentric” if on the surface of a body with a known rotational state.
+
+If at the center of a physical body, the observing point is “bodycentric” (with “geocentric” referring to the particular case of origin at the Earth’s center).
+
+If at the center-of-mass of some dynamical system, the center or observer is “barycentric”.
+
+
+3. Observer table
+Overview and usage:
+
+The output values in observer tables are “as seen” by an observer, being compensated for aberrations such as light-time and other significant perspective-dependent effects.
+
+Observer tables may be produced for any target object as seen by an observer from topocentric coordinates on or at the center of a major body (planet, natural satellite, spacecraft, and some asteroids) with a defined rotation model.
+
+Targets can also be specified as surface coordinates on another major body, such as a crater.
+
+Default quantities that are always present in an observer table: include
+
+Time Universal Time (UT) or Terrestrial Time (TT) output timescales can be selected
+
+Solar-presence symbol Indicates dawn and twilight conditions, and if the Sun’s limb is above or below the local horizon)
+
+Lunar-presence Indicates if the Moon’s limb is above or below the local horizon
+
+Additional user-selectable quantities are output in the order selected. The desired output quantities must be specified at least once. No initial default output exists in telnet or e-mail interfaces.
+
+A detailed explanation of the user-selectable output quantities is given later, but are briefly listed here along with their selection integer:
+
+        1. Astrometric RA & DEC
+      * 2. Apparent RA & DEC
+        3.   Rates; RA & DEC
+      * 4. Apparent AZ & EL
+        5.   Rates; AZ & EL
+        6. Satellite X & Y, position angle
+        7. Local apparent sidereal time
+        8. Airmass and Visual Magnitude Extinction
+        9. Visual magnitude & surface Brightness
+       10. Illuminated fraction
+       11. Defect of illumination
+       12. Satellite angle of separation/visibility code
+       13. Target angular diameter
+       14. Observer sub-longitude & sub-latitude
+       15. Sun sub-longitude & sub-latitude
+       16. Sub-Sun position angle & distance from disc center
+       17. North pole position angle & sistance from disc center
+       18. Heliocentric ecliptic longitude & latitude
+       19. Heliocentric range & range-rate
+       20. Observer range & range-rate
+       21. One-way down-leg light-time
+       22. Speed of target with respect to Sun & observer
+       23. Sun-Observer-Targ ELONGATION angle
+       24. Sun-Target-Observer ~PHASE angle
+       25. Target-Observer-Moon/Illumination%
+       26. Observer-Primary-Target angle
+       27. Position Angles; radius & -velocity
+       28. Orbit plane angle
+       29. Constellation Name
+       30. Delta-T (TDB - UT)
+     * 31. Observer-centered Earth ecliptic longitude & latitude
+       32. North pole RA & DEC
+       33. Galactic longitude and latitude
+       34. Local apparent SOLAR time
+       35. Earth->Site light-time
+     > 36. RA & DEC uncertainty
+     > 37. Plane-of-sky (POS) error ellipse
+     > 38. Plane-of-sky (POS) uncertainty (RSS)
+     > 39. Range & range-rate sigma
+     > 40. Doppler/delay sigmas
+       41. True anomaly angle
+     * 42. Local apparent hour angle
+       43. PHASE angle & bisector
+       44. Apparent target-centered longitude of Sun (L_s)
+     * 45. Inertial frame apparent RA & DEC
+       46.   Rates: Inertial RA & DEC
+     * 47. Sky motion: angular rate & angles
+       48. Lunar sky brightness & target visual SNR
+… or select a pre-defined alphabetic macro below:
+
+       A = All quantities
+       B = Bodycentric observer -> Any target
+       C = Body-center observer -> Small-body target
+       D = Topocentric observer -> Small-body target
+       E = Bodycentric observer -> Spacecraft target
+       F = Topocentric observer -> Spacecraft target
+The alphabetic short-cut macros specifically include these quantities:
+
+       A = 1-48
+       B = 1-3, 6, 9-33, 36-41, 43-46, 47
+       C = 1-3, 9-11, 13, 18-29, 33, 36-41, 43-46, 47
+       D = 1-5, 8-10, 11, 13, 18-29, 33-34, 36-48
+       E = 1-3, 8, 10, 18-25, 29, 41, 43-47
+       F = 1-5, 8, 10, 18-25, 29, 41-48
+… with the macros for small-body cases (C and D) primarily skipping cartographic dependent quantities. Note that some small bodies (such as Ida, Gaspra, Eros, etc.) are exceptions, having IAU-defined mapping grids. For such special cases, options C & D won’t provide all available data.
+
+“n.a.” is output in the ephemeris if a requested quantity is not available for a selected target object. The alphabetic macro codes are intended to help reduce the appearance of “n.a.” symbols in the final output. For example, when azimuth and elevation are requested for a geocentric ephemeris, or orbital uncertainies for an object without a covariance, these quantities will always be undefined and return an “n.a.” if requested.
+
+Some quantities, such as apparent visual magnitude (#9), may display values in the ephemeris output, but then switch to “n.a.” if moving outside the range of valid calculation. For example, if the phase angle becomes high enough that the magnitude model ceases to be accurate, numeric values will not be output and the “n.a.” marker will be output instead.
+
+The ‘*’ symbols in the quantity list above indicate quantities affected by user selection of airless or refraction-correction. Refraction correction, if requested, is available only for Earth (or body-centered observers, for which the refraction is zero since all directions are zenith). “n.a’ will be returned for all other observers.
+
+The ‘>’ symbol above marks small-body statistical quantities computable when a covariance matrix is available in the database or supplied by users. If such a quantity is requested but no statistical propagation is available for the object, the “n.a.” symbol will be output.
+
+In the list below, ‘*’ indicates initial program default for observer table OPTION settings:
+
+        Reference coordinate frame:
+    *     ICRF
+          B1950 (FK4/B1950)
+
+        Time scale:
+    *     UT  (Universal Time)
+          TT  (Terrestrial Time)
+
+        Time zone correction (used for UT-based tables only)
+
+        Time format
+    *     Calendar
+          JD (Julian date)
+          Both
+
+        Time output precision (calendar format only)
+    *     MINUTES (HH:MM)
+          SECONDS (HH:MM:SS)
+          FRACSEC (HH:MM:SS.fff)
+
+        Right-ascension format
+    *     Hours, minutes, seconds of arc (DEC degrees, minutes, seconds)
+          Decimal degrees
+
+        Extra-precision on RA/DEC output
+    *     No  (~ 10^-1 arcsec; HH MM SS.ff DD MM SS.f)
+          Yes (~ 10^-5 arcsec; HH MM SS.ffffff DD MM SS.fffff)
+
+        Apparent coordinate corrections
+    *     Airless
+          Refracted
+
+        Range units
+    *     au
+          km
+
+        Suppress range-rate output (when requesting range)
+    *     No
+          Yes
+
+        Minimum elevation (integer value)
+    *     -90 degrees (turns filter OFF)
+
+        Maximum airmass (real value)
+    *     38.0 (Turns filter OFF, 38 is value for refracted elevation = -0 deg)
+
+        Rise/Transit/Set print ONLY
+    *     No
+          TVH -- True visual horizon. Includes dip and refraction (Earth only).
+          GEO -- Geometric horizon. Includes refraction (Earth only).
+          RAD -- Radar horizon. Geometric horizon, no refraction.
+
+        Skip Daylight
+    *     No    (No cut-off, turns filter OFF)
+          Yes
+
+        Solar elongation cut-off (specify minimum and maximum angles for output)
+    *     0,180 (No cut-off, turns filter OFF)
+
+        Hour angle cut-off (-12 >= LHA >= 12, in units of decimal hours)
+           The absolute value of the optional input is used to temporarily turn
+           off output when local hour angle of the target seen from an Earth
+           topocentric location (only) is greater than the specified value.
+    *     0     (No cut-off, 0 value corresponds to transit, turns filter OFF)
+
+        RA/DEC angular rate cut-off
+           Output will be suppressed for those times when the user-specified
+           value is exceeded. The plane-of-sky angular rate is defined to be
+           the root-sum-of-squares (RSS) of the orthogonal linear RA*cos(DEC)
+           and DEC rates:
+    *     0     (No cut-off)
+
+        Comma-separated-value (CSV) spreadsheet output
+    *     No
+          Yes
+4. Close-approach table (small-bodies ONLY)
+Overview and usage:
+
+Requesting this table type (via telnet or e-mail) activates monitoring of close-approaches by the small-body target to the planets and 16 most massive asteroid perturbers. This table is not available for major body targets, only comets and asteroids numerically integrated by Horizons.
+
+Each time an encounter minimum distance with one of the 25 objects is detected, one-line of information is generated to summarize the encounter conditions.
+
+Close-approach detection limits that trigger output can be changed by users, but the default values are:
+    Other small-bodies (i.e., the set of 16 large perturbing asteroids)
+
+      0.10 au
+
+    Planetary bodies
+
+      Merc  Venu  Eart  Mars  Jupi  Satu  Nept  Uran  Plut  Moon
+      ----  ----  ----  ----  ----  ----  ----  ----  ----  -----
+      0.10  0.10  0.10  0.10  1.00  1.00  1.00  1.00  0.10  0.003
+
+  To change these values, input a comma-separated list of values (when
+  prompted) up to the last one of interest. For example, to change the
+  Earth encounter limit from 0.1 au to 0.2 au, enter:
+
+      0.1, 0.1, 0.2
+
+  The values of Mercury and Venus will remain 0.1 au, but the value for
+  the third entry, Earth, will be changed to 0.2 au.
+Table generation will be automatically cut-off early if the 3-sigma statistical uncertainty in the time of the encounter exceeds a default value of +/- 14400 minutes (+/- 10 days). Users can change this limit.
+
+Users may also toggle output of extended output lines for detected encounters. This provides additional statistical information on the encounter. See the section on “Close Approach Tables” below, for a detailed explanation of the output.
+
+Definition of Observer Table Quantities
+The detailed description of the selectable observer table quantities follows. “Labels” refers to column headings at the start of the output table.
+
+Time
+One output line for each step. The line begins with a ‘b’ if the date is BC, a blank (“ “) if AD. This is followed by the date and time, which is either UT or TT, in calendar or JD format (or both), depending on user defaults.
+
+Time tags refer to the time-scale conversion from TDB on Earth regardless of observer location within the solar system, although clock rates may differ due to the local gravity field and no analogous time-scales are locally defined.
+
+Solar Presence
+Time tag is followed by a blank, then a solar-presence symbol that indicates twilight and dawn conditions also:
+
+    '*'  Daylight (refracted solar upper-limb on or above apparent horizon)
+    'C'  Civil twilight/dawn
+    'N'  Nautical twilight/dawn
+    'A'  Astronomical twilight/dawn
+    ' '  Night OR geocentric ephemeris
+Lunar/Interfering Body Presence
+The solar presence symbol is immediately followed by an “interfering body” presence symbol (which will indicate the Moon for Earth observers):
+
+    'm'  Refracted upper-limb of Moon (or interfering body, 'i') is on or above
+          apparent horizon
+    ' '  Refracted upper-limb of Moon (or interfering body) is below the
+          apparent horizon, or geocentric ephemeris
+
+The lunar/IB presence marker (an ongoing state) can be over-ridden by a target
+event marker if an event has occurred since the last output step:
+
+    'r'  Rise          (target body on or above cut-off RTS elevation)
+    'e'  Elevation max (target body maximum elevation angle has occurred)
+    't'  Transit       (target body at or passed through observer meridian)
+    's'  Set           (target body on or below cut-off RTS elevation)
+The ‘rets’ codes will be displayed under two conditions only: if the print interval is less than or equal to 30 minutes or the RTS-only print option has been selected.
+
+For non-Earth observing sites, no twilight/dawn codes (C, N, or A) are output, refraction is not modeled and the interfering body marker is ‘i’ instead of the ‘m’ reserved for Earth’s Moon.
+
+Statistical Uncertainties
+Output for asteroids and comets can include formal +/- 3-standard-deviation statistical orbit uncertainty quantities. There is a 99.7% chance the actual value is within given bounds. These statistical calculations assume observational data errors are random. If there are systematic biases (such as measurement timing, reduction, or star-catalog errors), results can be optimistic. Because the epoch covariance is mapped using linearized variational partial derivatives, results can also be optimistic for times far from the solution epoch, particularly for objects having close planetary encounters.
+
+NOTE: “n.a.” is output if a requested quantity is not available for selected object. For example, azimuth and elevation for a geocentric ephemeris, or uncertainties for an object with no covariance in the database.
+
+Specific Quantities
+1. Astrometric RA & DEC
+Adjusted for light-time aberration only. With respect to the reference
+plane and equinox of the chosen system (ICRF or FK4/B1950). If the
+FK4/B1950 frame output is selected, elliptic aberration terms are added.
+Astrometric RA/DEC is generally used when comparing or reducing data
+against a star catalog.
+
+        Labels:  R.A._____(ICRF)_____DEC  (HMS/DMS format)
+                 R.A.__(FK4/B1950)___DEC  (HMS/DMS format)
+                 R.A.___(ICRF)___DEC      (degree format)
+                 R.A_(FK4/B1950)_DEC      (degree format)
+2. Apparent RA & DEC
+Apparent right ascension and declination of the target with respect to
+the specified observing center/site. "Apparent" can have three different
+meanings, depending on where the observer is located:
+
+A) For EARTH-BASED sites
+
+   Apparent coordinates are with respect to the true-equator and Earth
+   equinox of-date coordinate system (EOP-corrected IAU76/80 precession
+   and nutation of the spin-pole) and adjusted to model light-time, the
+   gravitational deflection of light, and stellar aberration, with an
+   optional (approximate) correction for atmospheric yellow-light
+   refraction.
+
+   Apparent RA/DEC for Earth-based sites is generally used when physically
+   aligning a telescope on the surface with the equator and pole of-date.
+
+B) For NON-EARTH SITES WITHOUT ROTATIONAL MODELS
+
+   Apparent RA and DEC are with respect to the REFERENCE FRAME coordinate
+   system (ICRF or FK4/B1950), but still adjusted for light-time, the
+   gravitational deflection of light and stellar aberration.
+
+C) For NON-EARTH SITES WITH ROTATIONAL MODELS
+
+   The origin of RA is the meridian containing the reference frame Earth
+   equinox (ICRF or FK4/B1950) with the X-Y equator plane defined by the
+   IAU rotational model. Adjusted for light-time, gravitational deflection
+   of light, and stellar aberration.  No refraction model is available.
+
+        Labels:  R.A._(a-apparent)__DEC.  (airless, HMS-DMS format)
+                 R.A._(r-apparent)__DEC.  (refracted, HMS-DMS format)
+                 R.A._(a-appar)_DEC.      (airless, decimal degrees format)
+                 R.A._(r-appar)_DEC.      (refracted, decimal degrees format)
+3. Rates: RA & DEC
+The angular rate of change in aparent RA and DEC of the target. This is
+with respect to the non-inertial IAU76/80 Earth true equator and equinox
+of-date reference frame. d(RA)/dt is multiplied by the cosine of
+declination to provide a linear rate in the plane-of-sky.
+
+  Units: ARCSECONDS PER HOUR.
+
+  Labels:  dRA*cosD d(DEC)/dt
+4. Apparent azimuth & elevation (AZ-EL) :
+Apparent azimuth and elevation of target. Adjusted for light-time,
+the gravitational deflection of light, stellar aberration, precession and
+nutation. There is an optional (approximate) adjustment for atmospheric
+refraction (Earth only). Azimuth is measured clockwise from north:
+
+  North(0) -> East(90) -> South(180) -> West(270)
+
+Elevation angle is with respect to plane perpendicular to local zenith
+direction.  TOPOCENTRIC ONLY.
+
+  Units: DEGREES
+
+  Labels:  Azi____(a-app)___Elev  (airless)
+           Azi____(r-app)___Elev  (refracted)
+5. Rates: azimuth and elevation (AZ-EL))
+The rate of change of target apparent azimuth and elevation (airless).
+d(AZ)/dt is multiplied by the cosine of the elevation angle. TOPOCENTRIC
+ONLY.
+
+  Units: ARCSECONDS PER MINUTE
+
+  Labels:  dAZ*cosE d(ELV)/dt
+6. X & Y satellite offset & position angle
+Satellite apparent differential coordinates in the plane-of-sky with
+respect to the primary body along with the satellite position angle.
+Differential coordinates are defined in RA as:
+
+   `X= ((RA_sat - RA_primary) * cosine(DEC_primary))`
+
+... and in DEC as:
+
+   `Y= (DEC_sat - DEC_primary)`
+
+Non-lunar satellites only. "SatPANG" is the counter-clockwise (CCW)
+position angle from the reference-frame of-date north-pole to a line
+from the primary center to the satellite center.
+
+  Units: ARCSECONDS (X & Y) and DEGREES (position angle)
+
+  Labels:  X_(sat-primary)_Y SatPANG
+7. Local Apparent Sidereal Time
+The angle measured westward in the body true-equator of-date plane
+from the meridian containing the body-fixed observer to the meridian
+containing the true Earth equinox (defined by intersection of the true
+equator of date with the ecliptic of date).  TOPOCENTRIC ONLY.
+
+  Units are HH MM SS.ffff or decimal hours (HH.ffffffffff)
+
+  Labels:  L_Ap_Sid_Time

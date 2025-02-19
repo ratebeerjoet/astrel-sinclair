@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Astrology Chart</title>  
+		<style>
+		/* Basic Text Styling */
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.5;
+  color: #333;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* Form Elements */
+input, textarea, select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #007bff; /* Blue focus color */
+}
+
+/* Button Styling */
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Responsive Adjustments (optional) */
+@media (max-width: 768px) {
+  /* Adjust styles for smaller screens if needed */
+}
+
+            #wheel-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 80vh;
+            }
+            #table-container {
+                text-align: center;
+                margin-top: 20px;
+            }
+            table {
+                margin: auto;
+                border-collapse: collapse;
+                width: 50%;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: center;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>                    
+    </head>
+    <body>
+        <h1 style="text-align: center;">Astrology Chart</h1>
+        <h2 style="text-align: center;" id="date-title">For <span id="selected-date"></span></h2>
+        <div style="text-align: center; margin-bottom: 10px;">
+            <label for="date-select">Change Date:</label>
+            <select id="date-select">
+                <option value="0">Today</option>
+                <option value="-1">Yesterday</option>
+                <option value="1">Tomorrow</option>
+                <option value="7">Next Week</option>
+                <option value="-7">Last Week</option>
+                <option value="30">Next Month</option>
+                <option value="-30">Last Month</option>
+                <option value="90">Three Months Forward</option>
+                <option value="-90">Three Months Back</option>
+                <option value="180">Six Months Forward</option>
+                <option value="-180">Six Months Back</option>
+                <option value="365">One Year Forward</option>
+                <option value="-365">One Year Back</option>
+            </select>
+        </div>
+        
+        <div id="wheel-container"></div>
+        <div id="table-container">
+            <h2>Planetary Positions</h2>
+            <table id="planet-table">
+                <tr>
+                    <th>Planet</th>
+                    <th>Longitude (°)</th>
+                    <th>Radians</th>
+                    <th>Planet is in</th>
+                </tr>
+            </table>
+        </div>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            const planets = {
+                'sun': "☉", 'moon': "☽", 'mercury': "☿", 'venus': "♀", 'mars': "♂",
+                'jupiter': "♃", 'saturn': "♄", 'uranus': "♅", 'neptune': "♆", 'pluto': "♇"
+            };
+            
+            const zodiacSigns = [
+                {symbol: "♈", name: "Aries"},
+                {symbol: "♉", name: "Taurus"},
+                {symbol: "♊", name: "Gemini"},
+                {symbol: "♋", name: "Cancer"},
+                {symbol: "♌", name: "Leo"},
+                {symbol: "♍", name: "Virgo"},
+                {symbol: "♎", name: "Libra"},
+                {symbol: "♏", name: "Scorpio"},
+                {symbol: "♐", name: "Sagittarius"},
+                {symbol: "♑", name: "Capricorn"},
+                {symbol: "♒", name: "Aquarius"},
+                {symbol: "♓", name: "Pisces"}
+            ];
+            
+            let urlParams = new URLSearchParams(window.location.search);
+            let selectedDate = urlParams.has("date") ? new Date(urlParams.get("date")) : new Date();
+            document.getElementById("selected-date").innerText = selectedDate.toISOString().split('T')[0];
+            
+            document.getElementById("date-select").addEventListener("change", function() {
+                let offset = parseInt(this.value);
+                let newDate = new Date(selectedDate);
+                newDate.setDate(selectedDate.getDate() + offset);
+                window.location.href = `?date=${newDate.toISOString().split('T')[0]}`;
+            });
+
+            async function fetchPlanetPositions(date) {
+                let planetPositions = [];
+                for (let planet in planets) {
+                    try {
+                        let response = await fetch(`http://127.0.0.1:5000/planets/${planet}/${date.toISOString().split('T')[0]}`);
+                        let data = await response.json();
+                        if (data.ecliptic_longitude !== undefined) {
+                            let angleDeg = data.ecliptic_longitude;
+                            let angleRad = ((angleDeg - 90) * Math.PI) / 180;
+                            let zodiacIndex = Math.floor(angleDeg / 30);
+                            let zodiac = zodiacSigns[zodiacIndex];
+                            let positionText = `${zodiac.symbol} ${zodiac.name}`;
+                            
+                            planetPositions.push({ 
+                                name: planet, 
+                                symbol: planets[planet], 
+                                longitude: angleDeg, 
+                                radians: angleRad, 
+                                sign: positionText 
+                            });
+                        }
+                    } catch (error) {
+                        console.error(`Error fetching data for ${planet}:`, error);
+                    }
+                }
+                return planetPositions;
+            }
+
+            let planetPositions = await fetchPlanetPositions(selectedDate);
+            
+            const planetTable = document.getElementById("planet-table");
+            planetPositions.forEach((planet) => {
+                let row = planetTable.insertRow();
+                row.insertCell(0).innerText = `${planet.symbol} ${planet.name}`;
+                row.insertCell(1).innerText = planet.longitude.toFixed(2);
+                row.insertCell(2).innerText = planet.radians.toFixed(4);
+                row.insertCell(3).innerText = planet.sign;
+            });
+
+            // Draw astrology wheel
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(svgNS, "svg");
+            svg.setAttribute("width", "600");
+            svg.setAttribute("height", "600");
+
+            const centerX = 300, centerY = 300, chartRadius = 250, innerRadius = 220;
+            
+            planetPositions.forEach((planet) => {
+                let x = centerX + innerRadius * Math.cos(planet.radians);
+                let y = centerY + innerRadius * Math.sin(planet.radians);
+                
+                const planetText = document.createElementNS(svgNS, "text");
+                planetText.setAttribute("x", x);
+                planetText.setAttribute("y", y);
+                planetText.setAttribute("font-size", "36");
+                planetText.setAttribute("fill", "black");
+                planetText.textContent = planet.symbol;
+                planetText.setAttribute("title", `Longitude: ${planet.longitude.toFixed(2)}°, Radians: ${planet.radians.toFixed(4)}`);
+                
+                svg.appendChild(planetText);
+            });
+
+            document.getElementById("wheel-container").appendChild(svg);
+			
+			
+			const centerX2 = 300, centerY2 = 300, chartRadius2 = 260;
+            
+            const circle = document.createElementNS(svgNS, "circle");
+            circle.setAttribute("cx", centerX2);
+            circle.setAttribute("cy", centerY2);
+            circle.setAttribute("r", chartRadius2);
+            circle.setAttribute("stroke", "black");
+            circle.setAttribute("stroke-width", "2");
+            circle.setAttribute("fill", "none");
+            svg.appendChild(circle);
+            
+            zodiacSigns.forEach((zodiac, index) => {
+                let angleRad = ((index * 30) - 90) * Math.PI / 180;
+                let x = centerX2 + chartRadius2 * Math.cos(angleRad);
+                let y = centerY2 + chartRadius2 * Math.sin(angleRad);
+                let text = document.createElementNS(svgNS, "text");
+                text.setAttribute("x", x);
+                text.setAttribute("y", y);
+                text.setAttribute("font-size", "26");
+                text.setAttribute("fill", "black");
+                text.textContent = zodiac.symbol;
+                svg.appendChild(text);
+            });
+            
+            document.getElementById("wheel-container").appendChild(svg);
+			
+			
+            let centerX3 = 300, centerY3 = 300;
+            
+            // Earth symbol at the center
+            let earthText = document.createElementNS(svgNS, "text");
+            earthText.setAttribute("x", centerX3 - 17);
+            earthText.setAttribute("y", centerY3 + 10);
+            earthText.setAttribute("font-size", "48");
+            earthText.setAttribute("fill", "black");
+            earthText.textContent = "⨁"; // Earth symbol
+            svg.appendChild(earthText);
+
+            document.getElementById("wheel-container").appendChild(svg);			
+        });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Astrology Chart - Pluto Test</title>  
+        <style>
+            #wheel-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 80vh;
+            }
+            #table-container {
+                text-align: center;
+                margin-top: 20px;
+            }
+            table {
+                margin: auto;
+                border-collapse: collapse;
+                width: 50%;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: center;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            #raw-response, #request-info {
+                white-space: pre-wrap;
+                background-color: #f4f4f4;
+                padding: 10px;
+                border: 1px solid #ddd;
+                margin: 20px;
+                max-height: 300px;
+                overflow-y: scroll;
+                font-size: 12px;
+            }
+        </style>                    
+    </head>
+    <body>
+        <h1 style="text-align: center;">Astrology Chart - Pluto Test</h1>
+        <div id="wheel-container"></div>
+        <div id="table-container">
+            <h2>Pluto's Position</h2>
+            <table id="planet-table">
+                <tr>
+                    <th>Planet</th>
+                    <th>Longitude (°)</th>
+                    <th>Radians</th>
+                    <th>Planet is in</th>
+                </tr>
+            </table>
+        </div>
+        <h2>API Request</h2>
+        <div id="request-info">Fetching...</div>
+        <h2>Raw API Response</h2>
+        <div id="raw-response">Fetching...</div>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            const rawResponseContainer = document.getElementById("raw-response");
+            const requestInfoContainer = document.getElementById("request-info");
+            const requestUrl = `http://127.0.0.1:5000/planets/pluto/2025-02-01`;
+            
+            console.log("Fetching Pluto's planetary position...");
+            requestInfoContainer.textContent = `Requesting: ${requestUrl}`;
+            
+            try {
+                let response = await fetch(requestUrl);
+                let data = await response.json();
+                console.log("API Response:", data); // Log full response for debugging
+                
+                if (data.raw_response) {
+                    rawResponseContainer.textContent = data.raw_response;
+                } else {
+                    rawResponseContainer.textContent = "No raw response received.";
+                }
+            } catch (error) {
+                console.error("Error fetching data for Pluto:", error);
+                rawResponseContainer.textContent = "Error fetching data. Check console logs.";
+                requestInfoContainer.textContent = "Failed to send request.";
+            }
+        });
+        </script>
+    </body>
+</html>
