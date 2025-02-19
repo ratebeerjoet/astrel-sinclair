@@ -206,6 +206,50 @@ button {
             });
 
             document.getElementById("wheel-container").appendChild(svg);
+            
+			function getCoordinates(longitude) {
+                let angleRad = ((longitude - 90) * Math.PI) / 180;
+                return {
+                    x: centerX + chartRadius * Math.cos(angleRad),
+                    y: centerY + chartRadius * Math.sin(angleRad)
+                };
+            }
+
+            // Draw aspect lines
+            function drawAspectLine(x1, y1, x2, y2, color) {
+                const line = document.createElementNS(svgNS, "line");
+                line.setAttribute("x1", x1);
+                line.setAttribute("y1", y1);
+                line.setAttribute("x2", x2);
+                line.setAttribute("y2", y2);
+                line.setAttribute("stroke", color);
+                line.setAttribute("stroke-width", "2");
+                svg.appendChild(line);
+            }
+            
+            function checkAspects() {
+                for (let i = 0; i < planetPositions.length; i++) {
+                    for (let j = i + 1; j < planetPositions.length; j++) {
+                        let diff = Math.abs(planetPositions[i].longitude - planetPositions[j].longitude);
+                        if (diff > 180) diff = 360 - diff;
+                        
+                        let coord1 = getCoordinates(planetPositions[i].longitude);
+                        let coord2 = getCoordinates(planetPositions[j].longitude);
+                        
+                        if (diff < 8) {
+                            drawAspectLine(coord1.x, coord1.y, coord2.x, coord2.y, "black"); // Conjunction
+                        } else if (Math.abs(diff - 90) < 8) {
+                            drawAspectLine(coord1.x, coord1.y, coord2.x, coord2.y, "red"); // Square
+                        } else if (Math.abs(diff - 120) < 8) {
+                            drawAspectLine(coord1.x, coord1.y, coord2.x, coord2.y, "blue"); // Trine
+                        } else if (Math.abs(diff - 180) < 8) {
+                            drawAspectLine(coord1.x, coord1.y, coord2.x, coord2.y, "green"); // Opposition
+                        }
+                    }
+                }
+            }
+            
+            checkAspects();
 			
 			
 			const centerX2 = 300, centerY2 = 300, chartRadius2 = 260;
